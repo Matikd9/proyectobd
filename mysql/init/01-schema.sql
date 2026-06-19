@@ -84,7 +84,8 @@ CREATE TABLE MEDICION_CLINICA (
   presion_diastolica DECIMAL(5,2),
   peso_kg DECIMAL(5,2),
   imc DECIMAL(4,2),
-  notes VARCHAR(500)
+  notes VARCHAR(500),
+  INDEX idx_paciente_fecha (id_paciente, fecha_hora)
 );
 
 CREATE TABLE MEDICION_SINTOMA(
