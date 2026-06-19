@@ -1,7 +1,7 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'Telemonitoreo de Pacientes Crónicos',
+  title: 'M.P.C',
   description: 'Plataforma para el registro y seguimiento clínico de pacientes.',
 };
 

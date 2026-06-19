@@ -170,7 +170,7 @@ const dict = {
     t2_sys: 'Systolic Pressure',
     t2_dia: 'Diastolic Pressure',
     t2_weight: 'Weight (kg)',
-    t2_height: 'Height (m) - for BMI',
+    t2_height: 'Height (cm) - for BMI',
     t2_symptoms: 'Symptoms (Optional)',
     t2_success: 'Measurement registered with ID: ',
     // Tab 3
@@ -625,7 +625,7 @@ function TabDashboard({ t, session, lang }) {
           <div className="sub-section">
             <h3 style={{ marginBottom: '1.5rem', color: 'var(--success-color)' }}>{t.db_advice}</h3>
             <div style={{ padding: '1.5rem 2rem', background: '#a6f2d1', color: '#00422b', borderRadius: '12px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <h4 style={{ fontWeight: '700', marginBottom: '0.5rem' }}>🩺 {t.db_advice}</h4>
+              <h4 style={{ fontWeight: '700', marginBottom: '0.5rem' }}>{t.db_advice}</h4>
               <p style={{ fontSize: '0.95rem', lineHeight: '1.6' }}>{t.db_advice_text}</p>
             </div>
           </div>
@@ -863,7 +863,7 @@ function TabIngresoMedicion({ t, pacientes, medicos, sintomas, session }) {
     }
 
     try {
-      const imc = (peso / Math.pow(height, 2)).toFixed(2);
+      const imc = (peso / Math.pow(height / 100, 2)).toFixed(2);
 
       const payload = {
         id_paciente: parseInt(form.id_paciente),
@@ -1170,7 +1170,7 @@ function TabHistorico({ t, pacientes, lang, session }) {
                       <div><strong>{row.presion_sistolica}/{row.presion_diastolica}</strong> <small>mmHg</small></div>
                       {row.momento_dia && (
                         <div style={{ fontSize: '0.75rem', marginTop: '2px', color: '#666' }}>
-                          {row.momento_dia} {row.en_ayunas ? `(${t.t3_fasting})` : `(${t.t3_no_fasting})`}
+                          {row.momento_dia === 'Mañana' ? t.t2_morning : row.momento_dia === 'Tarde' ? t.t2_afternoon : row.momento_dia === 'Noche' ? t.t2_night : row.momento_dia} {row.en_ayunas ? `(${t.t3_fasting})` : `(${t.t3_no_fasting})`}
                         </div>
                       )}
                     </div>
@@ -1226,7 +1226,7 @@ function TabAuditoria({ t }) {
           <div className="accordion-header" onClick={() => setExpanded(expanded === i ? null : i)}>
             <div>
               <span className="badge badge-media" style={{ marginRight: '1rem' }}>{log.operacion}</span>
-              <strong style={{ color: 'white' }}>{log.tabla_afectada}</strong>
+              <strong style={{ color: 'black' }}>{log.tabla_afectada}</strong>
             </div>
             <span style={{ color: 'var(--text-secondary)' }}>
               {new Date(log.timestamp).toLocaleString()}
