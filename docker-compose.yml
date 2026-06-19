@@ -14,6 +14,7 @@ services:
       - MYSQL_DATABASE=control_medico
       - MONGO_URI=mongodb://mongo:27017
       - MONGO_DB=audit_db
+      - WATCHPACK_POLLING=true
     depends_on:
       - db
       - mongo

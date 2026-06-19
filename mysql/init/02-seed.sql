@@ -84,10 +84,16 @@ BEGIN
   DECLARE m_id INT;
   DECLARE f_date DATETIME;
   DECLARE glucosa DECIMAL(6,2);
-  DECLARE p_sist DECIMAL(5,2);
-  DECLARE p_diast DECIMAL(5,2);
+  DECLARE p_sist SMALLINT UNSIGNED;
+  DECLARE p_diast SMALLINT UNSIGNED;
   DECLARE peso DECIMAL(5,2);
   DECLARE imc DECIMAL(4,2);
+  DECLARE m_dia VARCHAR(10);
+  DECLARE ayunas BOOLEAN;
+  DECLARE p_heridas BOOLEAN;
+  DECLARE p_ampollas BOOLEAN;
+  DECLARE p_rojeces BOOLEAN;
+  DECLARE p_color BOOLEAN;
   
   WHILE i < 1000 DO
     -- Random paciente (1 a 10)
@@ -99,13 +105,20 @@ BEGIN
     
     -- Random clinical data
     SET glucosa = ROUND(70 + (RAND() * 180), 2);
-    SET p_sist = ROUND(90 + (RAND() * 90), 2);
-    SET p_diast = ROUND(60 + (RAND() * 50), 2);
+    SET p_sist = ROUND(90 + (RAND() * 90), 0);
+    SET p_diast = ROUND(60 + (RAND() * 50), 0);
     SET peso = ROUND(60 + (RAND() * 40), 2);
     SET imc = ROUND(peso / ((1.70) * (1.70)), 2); -- asumiendo altura 1.70m prom.
     
-    INSERT INTO MEDICION_CLINICA (id_paciente, id_medico, fecha_hora, glucosa_mg_dl, presion_sistolica, presion_diastolica, peso_kg, imc, notes)
-    VALUES (p_id, m_id, f_date, glucosa, p_sist, p_diast, peso, imc, 'Generado automáticamente');
+    SET m_dia = ELT(FLOOR(1 + (RAND() * 3)), 'Mañana', 'Tarde', 'Noche');
+    SET ayunas = IF(RAND() > 0.5, 1, 0);
+    SET p_heridas = IF(RAND() > 0.9, 1, 0);
+    SET p_ampollas = IF(RAND() > 0.8, 1, 0);
+    SET p_rojeces = IF(RAND() > 0.7, 1, 0);
+    SET p_color = IF(RAND() > 0.8, 1, 0);
+
+    INSERT INTO MEDICION_CLINICA (id_paciente, id_medico, fecha_hora, glucosa_mg_dl, presion_sistolica, presion_diastolica, peso_kg, imc, momento_dia, en_ayunas, pie_heridas, pie_ampollas, pie_rojeces, pie_coloracion, notes)
+    VALUES (p_id, m_id, f_date, glucosa, p_sist, p_diast, peso, imc, m_dia, ayunas, p_heridas, p_ampollas, p_rojeces, p_color, 'Generado automáticamente');
     
     -- Insert random symptoms for this measurement (1 to 2 symptoms, up to 9 symptoms total)
     INSERT INTO MEDICION_SINTOMA (id_medicion, id_sintoma)

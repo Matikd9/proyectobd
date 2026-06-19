@@ -4,13 +4,20 @@ SET CHARACTER SET utf8mb4;
 CREATE DATABASE IF NOT EXISTS control_medico;
 USE control_medico;
 
+CREATE TABLE MEDICO (
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  nombre VARCHAR(100) NOT NULL,
+  apellido VARCHAR(100) NOT NULL,
+  especialidad VARCHAR(80) NOT NULL
+);
+
 CREATE TABLE PACIENTE (
   id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   rut VARCHAR(20) UNIQUE,
   nombre VARCHAR(80) NOT NULL,
   apellido VARCHAR(80) NOT NULL,
   fecha_nacimiento DATE NOT NULL,
-  genero CHAR(1),
+  genero ENUM('M', 'F'),
   telefono VARCHAR(20),
   email VARCHAR(150) UNIQUE,
   contrasena VARCHAR(255) NOT NULL DEFAULT '1234',
@@ -34,13 +41,6 @@ CREATE TABLE IDIOMA (
   id CHAR(5) PRIMARY KEY,
   nombre_idioma VARCHAR(50) NOT NULL,
   codigo_locale VARCHAR(20) NOT NULL
-);
-
-CREATE TABLE MEDICO (
-  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  nombre VARCHAR(100) NOT NULL,
-  apellido VARCHAR(100) NOT NULL,
-  especialidad VARCHAR(80) NOT NULL
 );
 
 CREATE TABLE ENFERMEDAD_TRADUCCION (
@@ -80,10 +80,16 @@ CREATE TABLE MEDICION_CLINICA (
   FOREIGN KEY (id_medico) REFERENCES MEDICO(id),
   fecha_hora DATETIME NOT NULL DEFAULT NOW(),
   glucosa_mg_dl DECIMAL(6,2),
-  presion_sistolica DECIMAL(5,2),
-  presion_diastolica DECIMAL(5,2),
+  presion_sistolica SMALLINT UNSIGNED,
+  presion_diastolica SMALLINT UNSIGNED,
   peso_kg DECIMAL(5,2),
   imc DECIMAL(4,2),
+  momento_dia ENUM('Mañana', 'Tarde', 'Noche'),
+  en_ayunas BOOLEAN,
+  pie_heridas BOOLEAN,
+  pie_ampollas BOOLEAN,
+  pie_rojeces BOOLEAN,
+  pie_coloracion BOOLEAN,
   notes VARCHAR(500),
   INDEX idx_paciente_fecha (id_paciente, fecha_hora)
 );
